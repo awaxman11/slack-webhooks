@@ -8,6 +8,8 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 gem 'heroku_secrets', github: 'alexpeattie/heroku_secrets'
+gem 'github_webhook'
+gem 'pry'
 
 group :development, :test do
   gem 'byebug'
