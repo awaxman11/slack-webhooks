@@ -10,6 +10,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'heroku_secrets', github: 'alexpeattie/heroku_secrets'
 gem 'github_webhook'
 gem 'pry'
+gem 'slack-notifier'
 
 group :development, :test do
   gem 'byebug'
