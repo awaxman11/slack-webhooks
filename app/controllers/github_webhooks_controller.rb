@@ -13,7 +13,7 @@ class GithubWebhooksController < ActionController::Base
       if payload[:label][:name] == "needs: design"
         notifier = Slack::Notifier.new Rails.application.secrets.slack_webhook_url
         notifier.username = "#{payload[:repository][:name]}"
-        notifier.ping "<#{payload[:issue][:html_url]}|##{payload[:issue][:number]}: #{payload[:issue][:title]}> needs design \n>#{payload[:issue][:body].gsub(/([!])/, '') }\n>"
+        notifier.ping "<#{payload[:issue][:html_url]}|##{payload[:issue][:number]}: #{payload[:issue][:title]}> needs design" + "\n >#{payload[:issue][:body].gsub(/([!])/, '') }\n>" if payload[:issue][:body] != ""
       end
     end
   end
