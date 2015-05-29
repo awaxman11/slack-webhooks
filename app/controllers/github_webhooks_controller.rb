@@ -1,4 +1,5 @@
 require 'slack-notifier'
+require 'octokit'
 
 # app/controllers/github_webhooks_controller.rb
 class GithubWebhooksController < ActionController::Base
@@ -9,6 +10,19 @@ class GithubWebhooksController < ActionController::Base
   end
 
   def issues(payload)
+
+    client = Octokit::Client.new \
+      :login    => Rails.application.secrets.github_login,
+      :password => Rails.application.secrets.github_pass
+
+    if payload[:action] == "opened" 
+      issue_number = payload[:issue][:number]
+      repo = payload[:repository][:name]
+      full_repo_name = payload[:repository][:full_name]
+      if repo == "tixcast"
+        client.add_labels_to_an_issue(full_repo_name, issue_number, ['status: icebox'])
+      end
+    end
 
     # TODO 3/15/15
     # Refactor this action and make code DRY
