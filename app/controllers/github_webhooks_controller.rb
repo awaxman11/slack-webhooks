@@ -8,7 +8,26 @@ class GithubWebhooksController < ActionController::Base
   def push(payload)
     # TODO: handle push webhook
   end
-
+  def component_team_mappings
+    {
+      'CHECKOUT-API' => 'team: 1',
+      'BUNYAN' => 'team: 1',
+      'LEDGERMAN' => 'team: 1',
+      'LISTINGFEED' => 'team: 2',
+      'UBERSEAT' => 'team: 2',
+      'MERCURY' => 'team: 2',
+      'ACCOUNT' => 'team: 3',
+      'BUNYAN-ADMIN' => 'team: 3'
+    }
+  end
+  def auto_add_team_label(payload)
+    component_team_mappings = this.component_team_mappings
+    component_team_mappings.each { |component, team|
+      if payload[:issue][:title].include? component
+        client.add_labels_to_an_issue(payload[:repository][:full_name], payload[:issue][:number], team)
+      end
+    }
+  end
   def issues(payload)
 
     client = Octokit::Client.new \
@@ -21,9 +40,7 @@ class GithubWebhooksController < ActionController::Base
       full_repo_name = payload[:repository][:full_name]
       if repo == "tixcast"
         client.add_labels_to_an_issue(full_repo_name, issue_number, ['status: needs triage'])
-        if payload[:issue][:title].includes? "[CHECKOUT-API]"
-          client.add_labels_to_an_issue(full_repo_name, issue_number, ['team: 1'])
-        end
+        auto_add_team_label(payload)
       end
     end
 
@@ -65,7 +82,6 @@ class GithubWebhooksController < ActionController::Base
       end
     end
   end
-
   def webhook_secret(payload)
     Rails.application.secrets.github_webhook_secret
   end
