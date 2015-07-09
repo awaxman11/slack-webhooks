@@ -21,7 +21,7 @@ class GithubWebhooksController < ActionController::Base
       full_repo_name = payload[:repository][:full_name]
       if repo == "tixcast"
         client.add_labels_to_an_issue(full_repo_name, issue_number, ['status: needs triage'])
-        if payload[:issue][:title].includes? "[CHECKOUT-API]"
+        if payload[:issue][:title].include?("[CHECKOUT-API]")
           client.add_labels_to_an_issue(full_repo_name, issue_number, ['team: 1'])
         end
       end
