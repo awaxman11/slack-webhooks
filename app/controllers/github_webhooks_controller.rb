@@ -1,9 +1,11 @@
 require 'slack-notifier'
 require 'octokit'
+require 'httparty'
 
 # app/controllers/github_webhooks_controller.rb
 class GithubWebhooksController < ActionController::Base
   include GithubWebhook::Processor
+  include WunderlustHelper
 
   def push(payload)
     # TODO: handle push webhook
@@ -79,6 +81,10 @@ class GithubWebhooksController < ActionController::Base
         notifier = Slack::Notifier.new Rails.application.secrets.slack_webhook_url
         notifier.username = "needs feedback"
         notifier.ping "<#{payload[:issue][:html_url]}|#{payload[:repository][:name]} ##{payload[:issue][:number]}: #{payload[:issue][:title]}>" + ((payload[:issue][:body] != "") ? "\n>#{payload[:issue][:body].gsub(/([!])/, '') }\n>" : ""), icon_url: icon_url
+        title = "#{payload[:repository][:name]}##{payload[:issue][:number]}: #{payload[:issue][:title]} #{payload[:issue][:html_url]}"
+        if needs_design?(payload)
+          add_task(title)
+        end
       end
     end
   end

@@ -9,6 +9,8 @@ Bundler.require(*Rails.groups)
 module SlackWebhooks
   class Application < Rails::Application
 
+    config.autoload_paths += %W(#{config.root}/lib) # add this line
+
     config.generators do |g|
       g.test_framework :rspec,
         fixtures: true,
