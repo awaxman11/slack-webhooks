@@ -4,8 +4,8 @@ module WunderlustHelper
 
     HTTParty.post('https://a.wunderlist.com/api/v1/tasks', 
       headers: {
-          'X-Client-ID' => Rails.application.secrets.slack_client_id,
-          'X-Access-Token' => Rails.application.secrets.slack_access_token,
+          'X-Client-ID' => Rails.application.secrets.wunderlist_client_id,
+          'X-Access-Token' => Rails.application.secrets.wunderlist_access_token,
           'Content-Type' => 'application/json'
         },
       body: { 
