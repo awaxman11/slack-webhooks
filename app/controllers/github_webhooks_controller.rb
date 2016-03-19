@@ -40,7 +40,7 @@ class GithubWebhooksController < ActionController::Base
       issue_number = payload[:issue][:number]
       repo = payload[:repository][:name]
       full_repo_name = payload[:repository][:full_name]
-      if repo == "tixcast"
+      if repo == "tixcast" || "product-design"
         client.add_labels_to_an_issue(full_repo_name, issue_number, ['status: needs triage'])
         auto_add_team_label(payload)
       end
@@ -59,6 +59,8 @@ class GithubWebhooksController < ActionController::Base
           icon_url = "http://cl.ly/aDfL/needs-design-iphone.png"
         when "tixcast"
           icon_url = "http://cl.ly/aEPm/needs-design-tixcast.png"
+        when "product-design"
+          icon_url = "http://cl.ly/aEPm/needs-design-tixcast.png"
         else
           icon_url = "http://cl.ly/aEkW/slack-logo.png"
         end
@@ -75,6 +77,8 @@ class GithubWebhooksController < ActionController::Base
           icon_url = "http://cl.ly/aE2M/needs-feedback-iphone.png"
         when "tixcast"
           icon_url = "http://cl.ly/aEIO/needs-feedback-tixcast.png"
+        when "product-design"
+          icon_url = "http://cl.ly/aEPm/needs-design-tixcast.png"
         else
           icon_url = "http://cl.ly/aEkW/slack-logo.png"
         end
