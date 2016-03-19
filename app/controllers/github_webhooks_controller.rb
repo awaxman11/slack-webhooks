@@ -78,7 +78,7 @@ class GithubWebhooksController < ActionController::Base
         when "tixcast"
           icon_url = "http://cl.ly/aEIO/needs-feedback-tixcast.png"
         when "product-design"
-          icon_url = "http://cl.ly/aEPm/needs-design-tixcast.png"
+          icon_url = "http://cl.ly/aEPm/needs-feedback-tixcast.png"
         else
           icon_url = "http://cl.ly/aEkW/slack-logo.png"
         end
