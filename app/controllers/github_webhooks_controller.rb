@@ -90,11 +90,11 @@ class GithubWebhooksController < ActionController::Base
           add_task(title)
         end
       elsif payload[:label][:name] == "design: done"
-          assignee_login = payload[:assignee][:login]
-          assignee_image = payload[:assignee][:avatar_url]
-          notifier = Slack::Notifier.new Rails.application.secrets.slack_webhook_url_2
-          notifier.username = assignee_login
-          notifier.ping "<#{payload[:issue][:html_url]}|#{payload[:repository][:name]} ##{payload[:issue][:number]}: #{payload[:issue][:title]}>", icon_url: assignee_image
+        assignee_login = payload[:issue][:assignee][:login]
+        assignee_image = payload[:issue][:assignee][:avatar_url]
+        notifier = Slack::Notifier.new Rails.application.secrets.slack_webhook_url_2
+        notifier.username = assignee_login
+        notifier.ping "<#{payload[:issue][:html_url]}|#{payload[:repository][:name]} ##{payload[:issue][:number]}: #{payload[:issue][:title]}>", icon_url: assignee_image
       end
     end
   end
