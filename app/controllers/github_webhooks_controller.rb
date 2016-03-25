@@ -40,7 +40,7 @@ class GithubWebhooksController < ActionController::Base
       issue_number = payload[:issue][:number]
       repo = payload[:repository][:name]
       full_repo_name = payload[:repository][:full_name]
-      if repo == "tixcast" || "product-design"
+      if repo == "tixcast" || repo == "product-design"
         client.add_labels_to_an_issue(full_repo_name, issue_number, ['status: needs triage'])
         auto_add_team_label(payload)
       end
