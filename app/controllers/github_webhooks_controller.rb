@@ -15,9 +15,9 @@ class GithubWebhooksController < ActionController::Base
       'CHECKOUT-API' => 'team: 1',
       'BUNYAN' => 'team: 1',
       'LEDGERMAN' => 'team: 1',
-      'LISTINGFEED' => 'team: 2',
-      'UBERSEAT' => 'team: 2',
-      'MERCURY' => 'team: 2',
+      'LISTINGFEED' => 'team: 1',
+      'UBERSEAT' => 'team: 1',
+      'MERCURY' => 'team: 1',
       'ACCOUNT' => 'team: 3',
       'BUNYAN-ADMIN' => 'team: 3'
     }
@@ -36,7 +36,7 @@ class GithubWebhooksController < ActionController::Base
       :login    => Rails.application.secrets.github_login,
       :password => Rails.application.secrets.github_pass
 
-    if payload[:action] == "opened" 
+    if payload[:action] == "opened" || payload[:action] == "reopened"
       issue_number = payload[:issue][:number]
       repo = payload[:repository][:name]
       full_repo_name = payload[:repository][:full_name]
@@ -93,7 +93,7 @@ class GithubWebhooksController < ActionController::Base
         if payload[:issue][:assignee]
           assignee_login = payload[:issue][:assignee][:login] + " completed"
           assignee_image = payload[:issue][:assignee][:avatar_url]
-        else 
+        else
           assignee_login = "Somebody completed"
           assignee_image = "http://cl.ly/aEPm/needs-design-tixcast.png"
         end
