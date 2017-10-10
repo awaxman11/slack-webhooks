@@ -10,26 +10,7 @@ class GithubWebhooksController < ActionController::Base
   def push(payload)
     # TODO: handle push webhook
   end
-  def component_team_mappings
-    {
-      'CHECKOUT-API' => 'team: 1',
-      'BUNYAN' => 'team: 1',
-      'LEDGERMAN' => 'team: 1',
-      'LISTINGFEED' => 'team: 1',
-      'UBERSEAT' => 'team: 1',
-      'MERCURY' => 'team: 1',
-      'ACCOUNT' => 'team: 3',
-      'BUNYAN-ADMIN' => 'team: 3'
-    }
-  end
-  def auto_add_team_label(payload)
-    component_team_mappings = this.component_team_mappings
-    component_team_mappings.each { |component, team|
-      if payload[:issue][:title].include? component
-        client.add_labels_to_an_issue(payload[:repository][:full_name], payload[:issue][:number], team)
-      end
-    }
-  end
+
   def issues(payload)
 
     client = Octokit::Client.new \
@@ -40,9 +21,8 @@ class GithubWebhooksController < ActionController::Base
       issue_number = payload[:issue][:number]
       repo = payload[:repository][:name]
       full_repo_name = payload[:repository][:full_name]
-      if repo == "tixcast" || repo == "product-design"
+      if ["tixcast", "product-design", "checkout-issues"].include?(repo)
         client.add_labels_to_an_issue(full_repo_name, issue_number, ['status: needs triage'])
-        auto_add_team_label(payload)
       end
     end
 
